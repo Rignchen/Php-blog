@@ -4,9 +4,18 @@
         <a href="/user/{{ creator["username"] }}">
             {{ creator["username"] }}
         </a>
-        <span>
-            <a href="/edit/{{ creator["username"] }}/{{ data["title"] }}" class="btn btn-primary">Edit</a>
-            <a href="/delete/{{ creator["username"] }}/{{ data["title"] }}" class="btn btn-danger">Delete</a>
-        </span>
+        {% if user["id"] == data["user_id"] %}
+            {% if pageType == 'post' %}
+                <span>
+                    <a href="/edit/{{ creator["username"] }}/{{ data["title"] }}" class="btn btn-primary">Edit</a>
+                    <a href="/delete/{{ creator["username"] }}/{{ data["title"] }}" class="btn btn-danger">Delete</a>
+                </span>
+            {% elseif pageType == 'edit' %}
+                <form method="post" action="">
+                    <input type="submit" class="btn btn-primary" value="Save">
+                    <a href="/post/{{ creator["username"] }}/{{ data["title"] }}" class="btn btn-danger">Cancel</a>
+                </form>
+            {% endif %}
+        {% endif %}
     </div>
 </div>

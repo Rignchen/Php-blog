@@ -3,6 +3,12 @@
         <h1 class="text-center">{{ data["title"] }}</h1>
     </div>
 </div>
-<div class="bg-warning-subtle">
-    {{ data["content"] | nl2br }}
-</div>
+{% if pageType == 'post' %}
+    <div class="bg-warning-subtle">
+        {{ data["content"] | nl2br }}
+    </div>
+{% elseif pageType == 'edit' %}
+    <label>
+        <textarea class="bg-warning-subtle" cols="1000" name="content">{{ data["content"] }}</textarea>
+    </label>
+{% endif %}
