@@ -1,0 +1,12 @@
+<div class="bg-info-subtle">
+    <div class="container d-flex justify-content-between">
+        <p>{{ data["created_at"] }}</p>
+        <a href="/user/{{ creator["username"] }}">
+            {{ creator["username"] }}
+        </a>
+        <span>
+            <a href="/edit/{{ creator["username"] }}/{{ data["title"] }}" class="btn btn-primary">Edit</a>
+            <a href="/delete/{{ creator["username"] }}/{{ data["title"] }}" class="btn btn-danger">Delete</a>
+        </span>
+    </div>
+</div>
