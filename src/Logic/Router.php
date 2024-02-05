@@ -10,9 +10,14 @@ use Slim\Views\Twig;
 class Router {
     public static function init(App $app, Database $db): void {
         $app->get('/post/{username}/{postName}', function (Request $request, Response $response, $args) use ($db) {
+            $view = Twig::fromRequest($request);
             $user = $db->get_user($args['username']);
             $data = $db->get_post($user['id'], $args['postName']);
-			return $response->getBody()->write("You're watching a post from " . $user['username'] . " called " . $data['title']);
+            return $view->render($response, 'main.twig', [
+                'data' => $data,
+                'creator' => $user,
+                'user' => $currentUser
+            ]);
         });
     }
 }
