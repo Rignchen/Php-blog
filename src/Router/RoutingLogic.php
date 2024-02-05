@@ -17,6 +17,8 @@ class RoutingLogic {
         $app->addErrorMiddleware(true, true, true);
         $app->add(TwigMiddleware::create($app, $twig));
 
+        Router::init($app, $pdo);
+
         $app->run();
     }
 }
