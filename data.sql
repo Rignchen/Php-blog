@@ -3,7 +3,7 @@ create table if not exists 'users' (
     'username' varchar(50) not null,
     'password' varchar(100) not null,
     'email' varchar(100) not null,
-    'created_at' datetime not null default current_timestamp,
+    'created_at' datetime not null default current_timestamp
 );
 create table if not exists 'posts' (
     'user_id' integer not null,
