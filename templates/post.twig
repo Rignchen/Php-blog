@@ -18,7 +18,11 @@
 	    </a>
 	    <span class="text-secondary-emphasis fs-3">My Super Post Thingy</span>
 	    <span>
+	        {% if user %}
+	            <a href="/logout" class="text-dark">Logout</a>
+	        {% else %}
 	        <a href="/login" class="text-dark">Login</a>
+	        {% endif %}
 	    </span>
 	</header>
 </main>
