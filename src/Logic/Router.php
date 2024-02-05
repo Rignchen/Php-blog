@@ -15,7 +15,7 @@ class Router {
             $view = Twig::fromRequest($request);
             $user = $db->get_user($args['username']);
             $data = $db->get_post($user['id'], $args['postName']);
-            return $view->render($response, 'main.twig', [
+            return $view->render($response, 'post.twig', [
                 'data' => $data,
                 'creator' => $user,
                 'user' => $currentUser
