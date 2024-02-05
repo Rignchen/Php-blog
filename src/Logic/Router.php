@@ -9,7 +9,9 @@ use Slim\Views\Twig;
 
 class Router {
     public static function init(App $app, Database $db): void {
-        $app->get('/post/{username}/{postName}', function (Request $request, Response $response, $args) use ($db) {
+        $currentUser = $db->get_user("Rignchen");
+
+        $app->get('/post/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
             $view = Twig::fromRequest($request);
             $user = $db->get_user($args['username']);
             $data = $db->get_post($user['id'], $args['postName']);
