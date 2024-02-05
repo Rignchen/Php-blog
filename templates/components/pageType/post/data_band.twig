@@ -1,0 +1,14 @@
+<div class="bg-info-subtle">
+    <div class="container d-flex justify-content-between">
+        <p>{{ data["created_at"] }}</p>
+        <a href="/user/{{ creator["username"] }}">
+            {{ creator["username"] }}
+        </a>
+        {% if user["id"] == data["user_id"] %}
+            <form action="/delete/{{ creator["username"] }}/{{ data["title"] }}" method="post">
+                <a href="/edit/{{ creator["username"] }}/{{ data["title"] }}" class="btn btn-primary">Edit</a>
+                <input type="submit" value="Delete" class="btn btn-danger">
+            </form>
+        {% endif %}
+    </div>
+</div>

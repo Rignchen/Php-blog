@@ -1,0 +1,5 @@
+{% if pageType == 'post' %}
+    {% include "components/pageType/post/.twig" %}
+{% elseif pageType == 'edit' %}
+    {% include "components/pageType/edit/.twig" %}
+{% endif %}
