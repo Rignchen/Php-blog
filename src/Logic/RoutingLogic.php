@@ -1,13 +1,13 @@
 <?php
 
-namespace Rignchen\SlimExemple\Router;
+namespace Rignchen\SlimExemple\Logic;
 
 use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
 
 class RoutingLogic {
-    public static function init($pdo) {
+    public static function init(Database $db): void {
         $app = AppFactory::create();
         $twig = Twig::create(__DIR__ . '/../../templates', ['cache' => false]);
 
@@ -17,7 +17,7 @@ class RoutingLogic {
         $app->addErrorMiddleware(true, true, true);
         $app->add(TwigMiddleware::create($app, $twig));
 
-        Router::init($app, $pdo);
+        Router::init($app, $db);
 
         $app->run();
     }
