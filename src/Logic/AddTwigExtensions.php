@@ -24,7 +24,7 @@ class AddTwigExtensions implements ExtensionInterface {
     }
     public function getFunctions(): array {
         return [
-            new TwigFunction('dd', function ($var) {echo '<pre style="background-color: black; color: white; padding: 1rem">' . json_encode($var, JSON_PRETTY_PRINT) . '</pre>';}),
+            new TwigFunction('dump', 'dump'),
         ];
     }
     public function getOperators(): array {
