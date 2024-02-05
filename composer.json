@@ -1,0 +1,23 @@
+{
+    "name": "rignchen/slim-exemple",
+    "type": "project",
+    "require": {
+        "slim/slim": "^4.12",
+        "slim/psr7": "^1.6",
+        "slim/twig-view": "^3.3",
+        "ext-pdo": "*",
+        "nesbot/carbon": "^3.0"
+    },
+    "license": "cc-by-nc-sa",
+    "autoload": {
+        "psr-4": {
+            "Rignchen\\SlimExemple\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Rignchen",
+            "email": "rinchendemort@gmail.com"
+        }
+    ]
+}
