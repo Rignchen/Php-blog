@@ -3,10 +3,9 @@
 namespace Rignchen\SlimExemple\Logic;
 use PDO;
 
-class Database
-{
+class Database {
     private PDO $pdo;
-    public function __construct(PDO $pdo){
+    public function __construct(PDO $pdo) {
         $this->pdo = $pdo;
     }
 
@@ -15,7 +14,7 @@ class Database
         $user_id->execute(['username' => $username]);
         return $user_id->fetch();
     }
-    public function get_post(int $user_id, String $postName) {
+    public function get_post(int $user_id, String $postName): array {
         $stmt = $this->pdo->prepare('SELECT * FROM posts WHERE user_id = :username AND title = :postName');
         $stmt->execute(['username' => $user_id, 'postName' => $postName]);
         return $stmt->fetch();
