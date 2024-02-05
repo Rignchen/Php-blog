@@ -4,9 +4,9 @@
         <a href="/user/{{ creator["username"] }}">
             {{ creator["username"] }}
         </a>
-        <form method="post" action="">
+        <span>
             <input type="submit" class="btn btn-primary" value="Save">
             <a href="/post/{{ creator["username"] }}/{{ data["title"] }}" class="btn btn-danger">Cancel</a>
-        </form>
+        </span>
     </div>
 </div>

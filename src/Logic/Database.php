@@ -19,4 +19,11 @@ class Database {
         $stmt->execute(['username' => $user_id, 'postName' => $postName]);
         return $stmt->fetch();
     }
+    public function update_post(array $data, String $content): void {
+        if ($data['content'] === $content) {
+            return;
+        }
+        $stmt = $this->pdo->prepare('update posts set content = :content where user_id = :id and title = :title');
+        $stmt->execute(['content' => $content, 'id' => $data['user_id'], 'title' => $data['title']]);
+    }
 }

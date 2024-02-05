@@ -36,5 +36,13 @@ class Router {
                 'user' => $currentUser
             ]);
         });
+        $app->post('/edit/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
+            $user = $db->get_user($args['username']);
+            $data = $db->get_post($user['id'], $args['postName']);
+            if ($currentUser['id'] === $user['id']) {
+                $db->update_post($data, $_POST['content']);
+            }
+            return $response->withHeader('Location', '/post/' . $user['username'] . '/' . $data['title'])->withStatus(302);
+        });
     }
 }
