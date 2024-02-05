@@ -15,9 +15,7 @@ class AddTwigExtensions implements ExtensionInterface {
         return [];
     }
     public function getFilters(): array {
-        return [
-            new TwigFilter('carbon', function ($int) {return Carbon::createFromTimestamp($int)->toDateString();}),
-        ];
+        return [];
     }
     public function getTests(): array {
         return [];
