@@ -5,10 +5,10 @@
             {{ creator["username"] }}
         </a>
         {% if user["id"] == data["user_id"] %}
-            <form action="/delete/{{ creator["username"] }}/{{ data["title"] }}" method="post">
+            <span class="d-flex gap-3">
                 <a href="/edit/{{ creator["username"] }}/{{ data["title"] }}" class="btn btn-primary">Edit</a>
-                <input type="submit" value="Delete" class="btn btn-danger">
-            </form>
+                <button onclick="document.querySelector('#delete-popup').classList.remove('d-none')" class="btn btn-danger">Delete</button>
+            </span>
         {% endif %}
     </div>
 </div>
