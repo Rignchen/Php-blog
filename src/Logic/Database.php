@@ -32,4 +32,8 @@ class Database {
         $stmt = $this->pdo->prepare('update posts set content = :content where user_id = :id and title = :title');
         $stmt->execute(['content' => $content, 'id' => $data['user_id'], 'title' => $data['title']]);
     }
+    public function delete_post(array $data): void {
+        $stmt = $this->pdo->prepare('delete from posts where user_id = :id and title = :title');
+        $stmt->execute(['id' => $data['user_id'], 'title' => $data['title']]);
+    }
 }

@@ -50,6 +50,15 @@ class Router {
             }
             return $response->withHeader('Location', '/post/' . $user['username'] . '/' . $data['title'])->withStatus(302);
         });
+        $app->post('/delete/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
+            $user = $db->get_user($args['username']);
+            $data = $db->get_post($user['id'], $args['postName']);
+            if ($currentUser['id'] === $user['id']) {
+                $db->delete_post($data);
+                return $response->withHeader('Location', '/user/' . $user['username'])->withStatus(302);
+            }
+            return $response->withHeader('Location', '/post/' . $user['username'] . '/' . $data['title'])->withStatus(302);
+        });
         $app->post('/new', function (Request $request, Response $response) use ($db, $currentUser) {
             $db->create_post($currentUser['id'], $_POST['title'], $_POST['content']);
             return $response->withHeader('Location', '/post/' . $currentUser['username'] . '/' . $_POST['title'])->withStatus(302);
