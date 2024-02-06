@@ -5,8 +5,9 @@
         </svg>
     </a>
     <span class="text-secondary-emphasis fs-3">My Super Post Thingy</span>
-    <span>
+    <span class="d-flex gap-5 mt-2 me-5">
         {% if user %}
+            <a href="/new" class="text-dark link-underline link-underline-opacity-0">+</a>
             <a href="/logout" class="text-dark">Logout</a>
         {% else %}
             <a href="/login" class="text-dark">Login</a>

@@ -34,6 +34,13 @@ class Router {
                 'user' => $currentUser
             ]);
         });
+        $app->get('/new', function (Request $request, Response $response) use ($currentUser) {
+            $view = Twig::fromRequest($request);
+            return $view->render($response, 'new.twig', [
+                'pageType' => 'new',
+                'user' => $currentUser
+            ]);
+        });
         //post
         $app->post('/edit/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
             $user = $db->get_user($args['username']);
@@ -42,6 +49,10 @@ class Router {
                 $db->update_post($data, $_POST['content']);
             }
             return $response->withHeader('Location', '/post/' . $user['username'] . '/' . $data['title'])->withStatus(302);
+        });
+        $app->post('/new', function (Request $request, Response $response) use ($db, $currentUser) {
+            $db->create_post($currentUser['id'], $_POST['title'], $_POST['content']);
+            return $response->withHeader('Location', '/post/' . $currentUser['username'] . '/' . $_POST['title'])->withStatus(302);
         });
     }
 }
