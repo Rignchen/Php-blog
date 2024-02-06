@@ -10,13 +10,12 @@ use Slim\Views\Twig;
 class Router {
     public static function init(App $app, Database $db): void {
         $currentUser = $db->get_user("Rignchen");
-
+        //get
         $app->get('/post/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
             $view = Twig::fromRequest($request);
             $user = $db->get_user($args['username']);
             $data = $db->get_post($user['id'], $args['postName']);
             return $view->render($response, 'post.twig', [
-                'pageType' => 'post',
                 'data' => $data,
                 'creator' => $user,
                 'user' => $currentUser
@@ -29,13 +28,13 @@ class Router {
             if ($currentUser['id'] !== $user['id']) {
                 return $response->withHeader('Location', '/post/' . $user['username'] . '/' . $data['title'])->withStatus(302);
             }
-            return $view->render($response, 'post.twig', [
-                'pageType' => 'edit',
+            return $view->render($response, 'edit.twig', [
                 'data' => $data,
                 'creator' => $user,
                 'user' => $currentUser
             ]);
         });
+        //post
         $app->post('/edit/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
             $user = $db->get_user($args['username']);
             $data = $db->get_post($user['id'], $args['postName']);
