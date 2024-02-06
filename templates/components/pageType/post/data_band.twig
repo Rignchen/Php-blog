@@ -1,12 +1,12 @@
 <div class="bg-info-subtle">
     <div class="container d-flex justify-content-between">
-        <p>{{ data["created_at"] }}</p>
-        <a href="/user/{{ creator["username"] }}">
-            {{ creator["username"] }}
+        <p>{{ post.get_creation_date() }}</p>
+        <a href="/user/{{ creator.get_username() }}">
+            {{ creator.get_username() }}
         </a>
-        {% if user["id"] == data["user_id"] %}
+        {% if post.test_property(user) %}
             <span class="d-flex gap-3">
-                <a href="/edit/{{ creator["username"] }}/{{ data["title"] }}" class="btn btn-primary">Edit</a>
+                <a href="/edit/{{ creator.get_username() }}/{{ post.get_title() }}" class="btn btn-primary">Edit</a>
                 <button onclick="document.querySelector('#delete-popup').classList.remove('d-none')" class="btn btn-danger">Delete</button>
             </span>
         {% endif %}

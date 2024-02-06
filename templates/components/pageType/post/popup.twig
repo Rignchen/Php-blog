@@ -2,7 +2,7 @@
     <button style="position:absolute;right:0" onclick="this.parentElement.classList.add('d-none')" class="bg-secondary rounded">X</button>
     <p class="pt-5 text-center">Are you sure you want to delete this?</p>
     <span style="position:absolute;bottom:0;" class="d-flex justify-content-evenly w-100 mb-3">
-        <form action="/delete/{{ creator["username"] }}/{{ data["title"] }}" method="post">
+        <form action="/delete/{{ creator.get_username() }}/{{ post.get_title }}" method="post">
             <button class="bg-success rounded">Yes</button>
         </form>
         <button class="bg-danger rounded" onclick="this.parentElement.parentElement.classList.add('d-none')">No</button>

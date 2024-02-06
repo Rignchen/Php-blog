@@ -1,12 +1,12 @@
 <div class="bg-info-subtle">
     <div class="container d-flex justify-content-between">
-        <p>{{ data["created_at"] }}</p>
-        <a href="/user/{{ creator["username"] }}">
-            {{ creator["username"] }}
+        <p>{{ post.get_creation_date() }}</p>
+        <a href="/user/{{ creator.get_username() }}">
+            {{ creator.get_username() }}
         </a>
         <span>
             <input type="submit" class="btn btn-primary" value="Save">
-            <a href="/post/{{ creator["username"] }}/{{ data["title"] }}" class="btn btn-danger">Cancel</a>
+            <a href="/post/{{ creator.get_username() }}/{{ post.get_title() }}" class="btn btn-danger">Cancel</a>
         </span>
     </div>
 </div>

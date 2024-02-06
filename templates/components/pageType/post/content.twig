@@ -1,6 +1,6 @@
 <div class="bg-light p-1 rounded">
     <div class="row">
-        <h1 class="text-center">{{ data["title"] }}</h1>
+        <h1 class="text-center">{{ post.get_title() }}</h1>
     </div>
 </div>
-<pre class="bg-warning-subtle" style="white-space:pre-wrap  ;">{{ data["content"] }}</pre>
+<pre class="bg-warning-subtle" style="white-space:pre-wrap;">{{ post.get_content() }}</pre>
