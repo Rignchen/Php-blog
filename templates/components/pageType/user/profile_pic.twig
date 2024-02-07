@@ -1,7 +1,9 @@
-{% if creator.get_gender() == 1 %}
-    <img src="../assets/profile_pic/placeholders/profile-male.svg" alt="profile picture" />
+{% if creator.get_profile_picture() %}
+    ../assets/profile_pic/{{ creator.get_profile_picture() }}
+{% elseif creator.get_gender() == 1 %}
+    ../assets/profile_pic/placeholders/profile-male.svg
 {% elseif creator.get_gender() == 2 %}
-    <img src="../assets/profile_pic/placeholders/profile-female.svg" alt="profile picture" />
+    ../assets/profile_pic/placeholders/profile-female.svg
 {% else %}
-    <img src="../assets/profile_pic/placeholders/profile-unknown.svg" alt="profile picture" />
+    ../assets/profile_pic/placeholders/profile-unknown.svg
 {% endif %}

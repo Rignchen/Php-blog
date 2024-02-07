@@ -1,3 +1,4 @@
 .idea
 vendor
 data.sqlite
+public/assets/profile_pic/*.*

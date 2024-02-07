@@ -4,6 +4,7 @@ create table if not exists 'users' (
     'password' varchar(100) not null,
     'email' varchar(100) not null,
     'gender' tinyint not null default 0,
+    'avatar' varchar(100),
     'created_at' datetime not null default current_timestamp
 );
 create table if not exists 'posts' (
