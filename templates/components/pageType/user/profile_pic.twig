@@ -1,0 +1,7 @@
+{% if creator.get_gender() == 1 %}
+    <img src="../assets/profile_pic/placeholders/profile-male.svg" alt="profile picture" />
+{% elseif creator.get_gender() == 2 %}
+    <img src="../assets/profile_pic/placeholders/profile-female.svg" alt="profile picture" />
+{% else %}
+    <img src="../assets/profile_pic/placeholders/profile-unknown.svg" alt="profile picture" />
+{% endif %}

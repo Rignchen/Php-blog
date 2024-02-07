@@ -40,6 +40,14 @@ class Router {
                 'user' => $currentUser
             ]);
         });
+        $app->get('/user/{username}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
+            $view = Twig::fromRequest($request);
+            $user = $db->get_user($args['username']);
+            return $view->render($response, 'user.twig', [
+                'user' => $currentUser,
+                'creator' => $user
+            ]);
+        });
         //post
         $app->post('/edit/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
             $user = $db->get_user($args['username']);
