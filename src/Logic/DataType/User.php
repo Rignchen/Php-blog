@@ -5,6 +5,7 @@ namespace Rignchen\SlimExemple\Logic\DataType;
 class User {
 
     private int $id;
+    private int $gender;
     private string $username;
     private string $email;
     private string $password;
@@ -12,6 +13,7 @@ class User {
 
     public function __construct(array $data) {
         $this->id = $data['id'];
+        $this->gender = $data['gender'];
         $this->username = $data['username'];
         $this->email = $data['email'];
         $this->password = $data['password'];
@@ -25,6 +27,9 @@ class User {
 
     public function get_id(): int {
         return $this->id;
+    }
+    public function get_gender(): int {
+        return $this->gender;
     }
     public function get_username(): string {
         return $this->username;
