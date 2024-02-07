@@ -9,7 +9,7 @@ use Slim\Views\Twig;
 
 class Router {
     public static function init(App $app, Database $db): void {
-        $currentUser = $db->get_user("Onyx");
+        #$currentUser = $db->get_user("Rignchen");
         //get
         $app->get('/post/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
             $view = Twig::fromRequest($request);
@@ -25,9 +25,8 @@ class Router {
             $view = Twig::fromRequest($request);
             $user = $db->get_user($args['username']);
             $post = $db->get_post($user->get_id(), $args['postName']);
-            if (!$currentUser->compare_user($user)) {
-                return $response->withHeader('Location', '/post/' . $user->get_username() . '/' . $post['title'])->withStatus(302);
-            }
+            if (!$currentUser || !$currentUser->compare_user($user))
+                return $response->withHeader('Location', '/post/' . $user->get_username() . '/' . $post->get_title())->withStatus(302);
             return $view->render($response, 'edit.twig', [
                 'post' => $post,
                 'creator' => $user,
@@ -35,6 +34,7 @@ class Router {
             ]);
         });
         $app->get('/new', function (Request $request, Response $response) use ($currentUser) {
+            if (!$currentUser) return $response->withHeader('Location', '/')->withStatus(302);
             $view = Twig::fromRequest($request);
             return $view->render($response, 'new.twig', [
                 'user' => $currentUser
@@ -44,7 +44,7 @@ class Router {
         $app->post('/edit/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
             $user = $db->get_user($args['username']);
             $post = $db->get_post($user->get_id(), $args['postName']);
-            if ($currentUser->compare_user($user)) {
+            if ($currentUser && $currentUser->compare_user($user)) {
                 $db->update_post($post, $_POST['content']);
             }
             return $response->withHeader('Location', '/post/' . $user->get_username() . '/' . $post->get_title())->withStatus(302);
@@ -52,13 +52,14 @@ class Router {
         $app->post('/delete/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
             $user = $db->get_user($args['username']);
             $post = $db->get_post($user->get_id(), $args['postName']);
-            if ($currentUser->compare_user($user)) {
+            if ($currentUser && $currentUser->compare_user($user)) {
                 $db->delete_post($post);
                 return $response->withHeader('Location', '/user/' . $user->get_username())->withStatus(302);
             }
             return $response->withHeader('Location', '/post/' . $user->get_username() . '/' . $post->get_title())->withStatus(302);
         });
         $app->post('/new', function (Request $request, Response $response) use ($db, $currentUser) {
+            if (!$currentUser || $_POST["title"] === "" || $_POST["content"] === "") return $response->withHeader('Location', '/')->withStatus(302);
             $db->create_post($currentUser, $_POST['title'], $_POST['content']);
             return $response->withHeader('Location', '/post/' . $currentUser->get_username() . '/' . $_POST['title'])->withStatus(302);
         });

@@ -18,7 +18,8 @@ class User {
         $this->created_at = $data['created_at'];
     }
 
-    public function compare_user(User $user): bool {
+    public function compare_user(User|null $user): bool {
+        if ($user === null) return false;
         return $this->id === $user->get_id();
     }
 

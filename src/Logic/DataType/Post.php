@@ -17,8 +17,9 @@ class Post {
         $this->created_at = $data['created_at'];
     }
 
-    function test_property(User $user): bool {
-        return $this->user_id == $user->get_id();
+    function test_property(User|null $user): bool {
+        if ($user === null) return false;
+        return $this->user_id === $user->get_id();
     }
 
     public function get_title(): string {
