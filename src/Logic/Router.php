@@ -9,7 +9,7 @@ use Slim\Views\Twig;
 
 class Router {
     public static function init(App $app, Database $db): void {
-        #$currentUser = $db->get_user("Rignchen");
+        $currentUser = $db->get_user("Rignchen");
         //get
         $app->get('/post/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
             $view = Twig::fromRequest($request);
@@ -42,7 +42,7 @@ class Router {
         });
         $app->get('/user/{username}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
             $view = Twig::fromRequest($request);
-            $user = $db->get_user($args['username']);
+            $user = $db->get_user($args['username'], true);
             return $view->render($response, 'user.twig', [
                 'user' => $currentUser,
                 'creator' => $user

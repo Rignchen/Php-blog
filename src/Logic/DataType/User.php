@@ -1,6 +1,7 @@
 <?php
 
 namespace Rignchen\SlimExemple\Logic\DataType;
+use Rignchen\SlimExemple\Logic\Database;
 
 class User {
 
@@ -11,8 +12,9 @@ class User {
     private string $email;
     private string $password;
     private string $created_at;
+    private Database|null $db;
 
-    public function __construct(array $data) {
+    public function __construct(array $data, Database|null $db = null) {
         $this->id = $data['id'];
         $this->gender = $data['gender'];
         $this->username = $data['username'];
@@ -20,6 +22,7 @@ class User {
         $this->email = $data['email'];
         $this->password = $data['password'];
         $this->created_at = $data['created_at'];
+        $this->db = $db;
     }
 
     public function compare_user(User|null $user): bool {
@@ -44,5 +47,14 @@ class User {
     }
     public function get_creation_date(): string {
         return $this->created_at;
+    }
+
+    public function get_all_posts(): array {
+        if ($this->db === null) throw new \Exception('cannot get list of posts, database is not set');
+        $output = [];
+        $posts = $this->db->get_all_posts_from_user($this);
+        foreach ($posts as $post)
+            $output[] = new Post($post);
+        return $output;
     }
 }

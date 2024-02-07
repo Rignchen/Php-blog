@@ -11,10 +11,10 @@ class Database {
         $this->pdo = $pdo;
     }
     // query data
-    public function get_user(String $username): User {
+    public function get_user(String $username, bool $includeDatabase = false): User {
         $user_id = $this->pdo->prepare('SELECT * FROM users WHERE username = :username');
         $user_id->execute(['username' => $username]);
-        return new User($user_id->fetch());
+        return new User($user_id->fetch(), $includeDatabase? $this : null);
     }
     public function get_post(int $user_id, String $postName): Post {
         $stmt = $this->pdo->prepare('SELECT * FROM posts WHERE user_id = :username AND title = :postName');
@@ -37,5 +37,10 @@ class Database {
     public function delete_post(Post $post): void {
         $stmt = $this->pdo->prepare('delete from posts where user_id = :id and title = :title');
         $stmt->execute(['id' => $post->get_user_id(), 'title' => $post->get_title()]);
+    }
+    public function get_all_posts_from_user(User $user): array {
+        $stmt = $this->pdo->prepare('SELECT * FROM posts WHERE user_id = :id');
+        $stmt->execute(['id' => $user->get_id()]);
+        return $stmt->fetchAll();
     }
 }

@@ -1,0 +1,7 @@
+{% for post in creator.get_all_posts() %}
+    <li>
+        <a href="/post/{{ creator.get_username() }}/{{ post.get_title() }}">
+            {{ post.get_title() }}
+        </a>
+    </li>
+{% endfor %}
