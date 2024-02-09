@@ -14,6 +14,18 @@ class Router {
         $app->get('/new', function (Request $request, Response $response) use ($currentUser) {
             if (!$currentUser) return $response->withHeader('Location', '/')->withStatus(302);
             $view = Twig::fromRequest($request);
+
+            if (isset($_SESSION['error'])) {
+                $error = $_SESSION['error'];
+                unset($_SESSION['error']);
+                return $view->render($response, 'new.twig', [
+                    'user' => $currentUser,
+                    'error' => $error['message'],
+                    'title' => $error['title'],
+                    'content' => $error['content']
+                ]);
+            }
+
             return $view->render($response, 'new.twig', [
                 'user' => $currentUser
             ]);
@@ -50,8 +62,25 @@ class Router {
         });
         //post
         $app->post('/new', function (Request $request, Response $response) use ($db, $currentUser) {
-            if (!$currentUser || $_POST["title"] === "" || $_POST["content"] === "") return $response->withHeader('Location', '/')->withStatus(302);
+            if (!$currentUser) return $response->withHeader('Location', '/')->withStatus(302);
+
+            $title_size = Lib::len($_POST['title']);
+
+            if (empty($_POST['title'])) $errorMessages = 'Title cannot be empty.';
+            else if ($title_size > 100) $errorMessages = 'Title cannot exceed 100 characters.';
+            else if (empty($_POST['content'])) $errorMessages = 'Content cannot be empty.';
+            else {
+                try {
             $db->create_post($currentUser, $_POST['title'], $_POST['content']);
+                }
+                catch (\Exception $e) {
+                    $errorMessages = $e->getCode() === "23000" ? 'Post already exists.' : 'An error occurred.';
+                }
+            }
+            if (isset($errorMessages)) {
+                $_SESSION['error'] = ["title" => $_POST['title'], "content" => $_POST['content'], "message" => $errorMessages];
+                return $response->withHeader('Location', '/new')->withStatus(302);
+            }
             return $response->withHeader('Location', '/post/' . $currentUser->get_username() . '/' . $_POST['title'])->withStatus(302);
         });
         $app->post('/edit/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
