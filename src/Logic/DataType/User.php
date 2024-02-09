@@ -51,10 +51,6 @@ class User {
 
     public function get_all_posts(): array {
         if ($this->db === null) throw new \Exception('cannot get list of posts, database is not set');
-        $output = [];
-        $posts = $this->db->get_all_posts_from_user($this);
-        foreach ($posts as $post)
-            $output[] = new Post($post);
-        return $output;
+        return $this->db->get_all_posts_from_user($this);
     }
 }

@@ -38,9 +38,17 @@ class Database {
         $stmt = $this->pdo->prepare('delete from posts where user_id = :id and title = :title');
         $stmt->execute(['id' => $post->get_user_id(), 'title' => $post->get_title()]);
     }
+
+    private function make_post_array($stmt): array {
+        $posts = [];
+        while ($row = $stmt->fetch()) {
+            $posts[] = new Post($row);
+        }
+        return $posts;
+    }
     public function get_all_posts_from_user(User $user): array {
         $stmt = $this->pdo->prepare('SELECT * FROM posts WHERE user_id = :id');
         $stmt->execute(['id' => $user->get_id()]);
-        return $stmt->fetchAll();
+        return $this->make_post_array($stmt);
     }
 }
