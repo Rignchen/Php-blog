@@ -54,10 +54,13 @@ class Router {
             $post = $db->get_post($user->get_id(), $args['postName']);
             if (!$currentUser || !$currentUser->compare_user($user))
                 return $response->withHeader('Location', '/post/' . $user->get_username() . '/' . $post->get_title())->withStatus(302);
+            $error = $_SESSION['error'];
             return $view->render($response, 'edit.twig', [
                 'post' => $post,
                 'creator' => $user,
-                'user' => $currentUser
+                'user' => $currentUser,
+                'content' => $error['content'] ?? $post->get_content(),
+                'error' => $error['message']
             ]);
         });
         //post
@@ -86,6 +89,10 @@ class Router {
         $app->post('/edit/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
             $user = $db->get_user($args['username']);
             $post = $db->get_post($user->get_id(), $args['postName']);
+            if (Lib::len($_POST['content']) === 0) {
+                $_SESSION['error'] = ["content" => $_POST['content'], "message" => 'Content cannot be empty.'];
+                return $response->withHeader('Location', '/edit/' . $user->get_username() . '/' . $post->get_title())->withStatus(302);
+            }
             if ($currentUser && $currentUser->compare_user($user)) {
                 $db->update_post($post, $_POST['content']);
             }
