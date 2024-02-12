@@ -1,0 +1,10 @@
+<h2 class="mt-5">Most recent posts</h2>
+<div class="d-flex flex-wrap justify-content-evenly m-3 gap-1">
+    {% for post in posts %}
+        {% set creator = get_creator(post).get_username() %}
+        {% set title = post.get_title() %}
+        {% set content = post.get_content() %}
+
+        {% include 'components/pageType/home/post.twig' %}
+    {% endfor %}
+</div>

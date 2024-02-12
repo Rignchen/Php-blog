@@ -1,0 +1,10 @@
+<div class="p-3 mb-2 bg-light text-dark rounded border border-dark w-25">
+    <h3>{{ title }} - <small>by <a href="/user/{{ creator }}">{{ creator }}</a></small></h3>
+    {% if content|length > 100 %}
+        {{ content|slice(0, 100) }}...
+    {% else %}
+        {{ content }}
+    {% endif %}
+    <br>
+    <a href="/post/{{ creator }}/{{ title }}">Read more</a>
+</div>

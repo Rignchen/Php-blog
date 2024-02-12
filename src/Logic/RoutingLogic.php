@@ -11,7 +11,7 @@ class RoutingLogic {
         $app = AppFactory::create();
         $twig = Twig::create(__DIR__ . '/../../templates', ['cache' => false]);
 
-        $twig->addExtension( new AddTwigExtensions());
+        $twig->addExtension(new AddTwigExtensions($db));
 
         $app->addRoutingMiddleware();
         $app->addErrorMiddleware(true, true, true);

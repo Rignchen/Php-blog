@@ -16,6 +16,11 @@ class Database {
         $user_id->execute(['username' => $username]);
         return new User($user_id->fetch(), $includeDatabase? $this : null);
     }
+    public function get_user_by_id(int $id, bool $includeDatabase = false): User {
+        $user_id = $this->pdo->prepare('select * from users where id = :id');
+        $user_id->execute(['id' => $id]);
+        return new User($user_id->fetch(), $includeDatabase? $this : null);
+    }
     public function get_post(int $user_id, String $postName): Post {
         $stmt = $this->pdo->prepare('select * from posts where user_id = :username and title = :postName');
         $stmt->execute(['username' => $user_id, 'postName' => $postName]);
@@ -49,6 +54,11 @@ class Database {
     public function get_all_posts_from_user(User $user): array {
         $stmt = $this->pdo->prepare('select * from posts where user_id = :id');
         $stmt->execute(['id' => $user->get_id()]);
+        return $this->make_post_array($stmt);
+    }
+    public function getMostRecentPosts(): array {
+        $stmt = $this->pdo->prepare('select * from posts order by created_at desc limit 10');
+        $stmt->execute();
         return $this->make_post_array($stmt);
     }
 }

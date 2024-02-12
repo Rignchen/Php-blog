@@ -2,12 +2,12 @@
 
 namespace Rignchen\SlimExemple\Logic;
 
-use Carbon\Carbon;
+use Rignchen\SlimExemple\Logic\DataType\Post;
 use Twig\Extension\ExtensionInterface;
-use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class AddTwigExtensions implements ExtensionInterface {
+    public function __construct(private readonly Database $db) {}
     public function getTokenParsers(): array {
         return [];
     }
@@ -23,6 +23,7 @@ class AddTwigExtensions implements ExtensionInterface {
     public function getFunctions(): array {
         return [
             new TwigFunction('dump', 'dump'),
+            new TwigFunction('get_creator', fn (Post $post) => $this->db->get_user_by_id($post->get_user_id())),
         ];
     }
     public function getOperators(): array {
