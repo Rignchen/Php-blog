@@ -6,7 +6,7 @@
 <a href="/post/{{ creator }}/{{ title }}" class="text-decoration-none text-dark">
     <li class="p-3 border mb-2">
         <span>
-            {{ title }}<br>
+            <h4>{{ title }}</h4>
             {% if content|length > 100 %}
                 {{ content|slice(0, 100) }}...
             {% else %}

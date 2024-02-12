@@ -2,8 +2,8 @@
 
 <!-- I have to put the <li> tag inside the <a> tag because otherwise the redirect wouldn't work when clicking outside the text -->
 <a href="/user/{{ creator.get_username() }}" class="text-decoration-none text-dark">
-    <div class="p-3 border mb-2">
+    <div class="p-3 border mb-2 d-flex align-items-center">
         <img src="{% include 'components/pageType/user/profile_pic.twig' %}" alt="profile picture" width="50px" height="50px" />
-        {{ creator.get_username() }}
+        <h4 class="m-1 ms-2">{{ creator.get_username() }}</h4>
     </div>
 </a>
