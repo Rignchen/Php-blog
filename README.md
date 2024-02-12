@@ -8,6 +8,15 @@ This is a simple blog application written in PHP and stored on [GitHub](https://
 3. Create a database `data.sqlite` and run the `data.sql` file to create the tables
 4. Run `php -S localhost:8000 -t public` to start the server
 
+```bash
+git clone git@github.com:Rignchen/Php-blog.git
+cd Php-blog
+composer install
+touch data.sqlite
+sqlite3 data.sqlite < data.sql
+php -S localhost:8000 -t public
+```
+
 ## Website
 - All posts are accessible with the link `http://localhost:8000/posts/<creator_name>/<post_name>`
 - You can modify your posts with the link `http://localhost:8000/edit/<creator_name>/<post_name>`
