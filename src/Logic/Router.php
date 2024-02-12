@@ -15,19 +15,14 @@ class Router {
             if (!$currentUser) return $response->withHeader('Location', '/')->withStatus(302);
             $view = Twig::fromRequest($request);
 
-            if (isset($_SESSION['error'])) {
                 $error = $_SESSION['error'];
                 unset($_SESSION['error']);
+
                 return $view->render($response, 'new.twig', [
                     'user' => $currentUser,
                     'error' => $error['message'],
                     'title' => $error['title'],
                     'content' => $error['content']
-                ]);
-            }
-
-            return $view->render($response, 'new.twig', [
-                'user' => $currentUser
             ]);
         });
         $app->get('/user/{username}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
@@ -40,12 +35,17 @@ class Router {
         });
         $app->get('/post/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
             $view = Twig::fromRequest($request);
+
+            $success = $_SESSION['success'];
+            unset($_SESSION['success']);
+
             $user = $db->get_user($args['username']);
             $post = $db->get_post($user->get_id(), $args['postName']);
             return $view->render($response, 'post.twig', [
                 'post' => $post,
                 'creator' => $user,
-                'user' => $currentUser
+                'user' => $currentUser,
+                'success' => $success['message']
             ]);
         });
         $app->get('/edit/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
@@ -84,6 +84,7 @@ class Router {
                 $_SESSION['error'] = ["title" => $_POST['title'], "content" => $_POST['content'], "message" => $errorMessages];
                 return $response->withHeader('Location', '/new')->withStatus(302);
             }
+            $_SESSION['success'] = ["message" => "Post created successfully."];
             return $response->withHeader('Location', '/post/' . $currentUser->get_username() . '/' . $_POST['title'])->withStatus(302);
         });
         $app->post('/edit/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
