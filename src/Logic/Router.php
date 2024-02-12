@@ -15,6 +15,14 @@ class Router {
         unset($_SESSION['message']);
 
         //get
+        $app->get('/', function (Request $request, Response $response) use ($db, $currentUser, $message) {
+            $view = Twig::fromRequest($request);
+            return $view->render($response, 'home.twig', [
+                'user' => $currentUser,
+                'posts' => $db->getMostRecentPosts(),
+                'message' => $message
+            ]);
+        });
         $app->get('/new', function (Request $request, Response $response) use ($currentUser, $message) {
             if (!$currentUser) return $response->withHeader('Location', '/')->withStatus(302);
             $view = Twig::fromRequest($request);
