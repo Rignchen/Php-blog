@@ -1,10 +1,10 @@
-{% if error %}
+{% if message['error'] %}
     <div class="alert alert-danger">
-        {{ error }}
+        {{ message['error'] }}
     </div>
 {% endif %}
-{% if success %}
+{% if message['success'] %}
     <div class="alert alert-success">
-        {{ success }}
+        {{ message['success'] }}
     </div>
 {% endif %}

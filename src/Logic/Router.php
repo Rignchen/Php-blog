@@ -10,34 +10,33 @@ use Slim\Views\Twig;
 class Router {
     public static function init(App $app, Database $db): void {
         $currentUser = $db->get_user("Rignchen");
+
+        $message = $_SESSION['message'];
+        unset($_SESSION['message']);
+
         //get
-        $app->get('/new', function (Request $request, Response $response) use ($currentUser) {
+        $app->get('/new', function (Request $request, Response $response) use ($currentUser, $message) {
             if (!$currentUser) return $response->withHeader('Location', '/')->withStatus(302);
             $view = Twig::fromRequest($request);
 
-                $error = $_SESSION['error'];
-                unset($_SESSION['error']);
-
                 return $view->render($response, 'new.twig', [
                     'user' => $currentUser,
-                    'error' => $error['message'],
-                    'title' => $error['title'],
-                    'content' => $error['content']
+                'message' => $message,
+                'title' => $message['content']['title'],
+                'content' => $message['content']['text']
             ]);
         });
-        $app->get('/user/{username}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
+        $app->get('/user/{username}', function (Request $request, Response $response, $args) use ($db, $currentUser, $message) {
             $view = Twig::fromRequest($request);
             $user = $db->get_user($args['username'], true);
             return $view->render($response, 'user.twig', [
                 'user' => $currentUser,
-                'creator' => $user
+                'creator' => $user,
+                'message' => $message
             ]);
         });
-        $app->get('/post/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
+        $app->get('/post/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser, $message) {
             $view = Twig::fromRequest($request);
-
-            $success = $_SESSION['success'];
-            unset($_SESSION['success']);
 
             $user = $db->get_user($args['username']);
             $post = $db->get_post($user->get_id(), $args['postName']);
@@ -45,22 +44,21 @@ class Router {
                 'post' => $post,
                 'creator' => $user,
                 'user' => $currentUser,
-                'success' => $success['message']
+                'message' => $message
             ]);
         });
-        $app->get('/edit/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
+        $app->get('/edit/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser, $message) {
             $view = Twig::fromRequest($request);
             $user = $db->get_user($args['username']);
             $post = $db->get_post($user->get_id(), $args['postName']);
             if (!$currentUser || !$currentUser->compare_user($user))
                 return $response->withHeader('Location', '/post/' . $user->get_username() . '/' . $post->get_title())->withStatus(302);
-            $error = $_SESSION['error'];
             return $view->render($response, 'edit.twig', [
                 'post' => $post,
                 'creator' => $user,
                 'user' => $currentUser,
-                'content' => $error['content'] ?? $post->get_content(),
-                'error' => $error['message']
+                'message' => $message,
+                'content' => $message['content']['text'] ?? $post->get_content(),
             ]);
         });
         //post
@@ -81,17 +79,17 @@ class Router {
                 }
             }
             if (isset($errorMessages)) {
-                $_SESSION['error'] = ["title" => $_POST['title'], "content" => $_POST['content'], "message" => $errorMessages];
+                $_SESSION['message'] = ["content" => ['title' => $_POST['title'], 'text' => $_POST['content']], "error" => $errorMessages];
                 return $response->withHeader('Location', '/new')->withStatus(302);
             }
-            $_SESSION['success'] = ["message" => "Post created successfully."];
+            $_SESSION['message'] = ["success" => "Post created successfully."];
             return $response->withHeader('Location', '/post/' . $currentUser->get_username() . '/' . $_POST['title'])->withStatus(302);
         });
         $app->post('/edit/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
             $user = $db->get_user($args['username']);
             $post = $db->get_post($user->get_id(), $args['postName']);
             if (Lib::len($_POST['content']) === 0) {
-                $_SESSION['error'] = ["content" => $_POST['content'], "message" => 'Content cannot be empty.'];
+                $_SESSION['message'] = ["content" => ['text' => $_POST['content']], "error" => 'Content cannot be empty.'];
                 return $response->withHeader('Location', '/edit/' . $user->get_username() . '/' . $post->get_title())->withStatus(302);
             }
             if ($currentUser && $currentUser->compare_user($user)) {
