@@ -95,6 +95,7 @@ class Router {
             if ($currentUser && $currentUser->compare_user($user)) {
                 $db->update_post($post, $_POST['content']);
             }
+            $_SESSION['message'] = ["success" => "Post updated successfully."];
             return $response->withHeader('Location', '/post/' . $user->get_username() . '/' . $post->get_title())->withStatus(302);
         });
         $app->post('/delete/{username}/{postName}', function (Request $request, Response $response, $args) use ($db, $currentUser) {
@@ -102,6 +103,7 @@ class Router {
             $post = $db->get_post($user->get_id(), $args['postName']);
             if ($currentUser && $currentUser->compare_user($user)) {
                 $db->delete_post($post);
+                $_SESSION['message'] = ["success" => "Post deleted successfully."];
                 return $response->withHeader('Location', '/user/' . $user->get_username())->withStatus(302);
             }
             return $response->withHeader('Location', '/post/' . $user->get_username() . '/' . $post->get_title())->withStatus(302);
