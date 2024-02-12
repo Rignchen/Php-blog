@@ -12,12 +12,12 @@ class Database {
     }
     // query data
     public function get_user(String $username, bool $includeDatabase = false): User {
-        $user_id = $this->pdo->prepare('SELECT * FROM users WHERE username = :username');
+        $user_id = $this->pdo->prepare('select * from users where username = :username');
         $user_id->execute(['username' => $username]);
         return new User($user_id->fetch(), $includeDatabase? $this : null);
     }
     public function get_post(int $user_id, String $postName): Post {
-        $stmt = $this->pdo->prepare('SELECT * FROM posts WHERE user_id = :username AND title = :postName');
+        $stmt = $this->pdo->prepare('select * from posts where user_id = :username and title = :postName');
         $stmt->execute(['username' => $user_id, 'postName' => $postName]);
         return new Post($stmt->fetch());
     }
@@ -47,7 +47,7 @@ class Database {
         return $posts;
     }
     public function get_all_posts_from_user(User $user): array {
-        $stmt = $this->pdo->prepare('SELECT * FROM posts WHERE user_id = :id');
+        $stmt = $this->pdo->prepare('select * from posts where user_id = :id');
         $stmt->execute(['id' => $user->get_id()]);
         return $this->make_post_array($stmt);
     }
