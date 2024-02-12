@@ -28,6 +28,7 @@ class Router {
             $search = $request->getQueryParams()['q'];
             return $view->render($response, 'search.twig', [
                 'user' => $currentUser,
+                'request' => $search,
                 'post_list' => $db->search_posts($search),
                 'user_list' => $db->search_users($search),
                 'message' => $message
