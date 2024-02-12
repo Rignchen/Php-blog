@@ -5,7 +5,9 @@
     {% else %}
         <a href="/login">Login</a>
     {% endif %}
-    to start sharing your thoughts with the world!<br>
+    to start sharing your thoughts with the world!
+    <br><br>
+    {% include 'components/pageType/search/search_bar.twig' %}
 
     {% include 'components/pageType/home/post_list.twig' %}
 </div>
