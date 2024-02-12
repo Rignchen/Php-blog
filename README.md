@@ -24,7 +24,8 @@ php -S localhost:8000 -t public
 - New posts can be created with the link `http://localhost:8000/new`
 
 ## Features
-- Create, edit and delete posts
+- Create, edit and delete posts made by the user
+- View posts made by other users
 - Error and success messages
 
 ## License
