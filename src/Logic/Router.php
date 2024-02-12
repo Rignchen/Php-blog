@@ -23,6 +23,15 @@ class Router {
                 'message' => $message
             ]);
         });
+        $app->get('/search', function (Request $request, Response $response) use ($db, $currentUser, $message) {
+            $view = Twig::fromRequest($request);
+            $search = $request->getQueryParams()['q'];
+            return $view->render($response, 'search.twig', [
+                'user' => $currentUser,
+                'posts' => $db->search_posts($search),
+                'message' => $message
+            ]);
+        });
         $app->get('/new', function (Request $request, Response $response) use ($currentUser, $message) {
             if (!$currentUser) return $response->withHeader('Location', '/')->withStatus(302);
             $view = Twig::fromRequest($request);

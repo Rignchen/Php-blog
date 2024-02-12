@@ -61,4 +61,9 @@ class Database {
         $stmt->execute();
         return $this->make_post_array($stmt);
     }
+    public function search_posts(String $search): array {
+        $stmt = $this->pdo->prepare('select * from posts where title like :search or content like :search');
+        $stmt->execute(['search' => '%' . $search . '%']);
+        return $this->make_post_array($stmt);
+    }
 }
