@@ -27,8 +27,8 @@ class Router {
             if (!$currentUser) return $response->withHeader('Location', '/')->withStatus(302);
             $view = Twig::fromRequest($request);
 
-                return $view->render($response, 'new.twig', [
-                    'user' => $currentUser,
+            return $view->render($response, 'new.twig', [
+                'user' => $currentUser,
                 'message' => $message,
                 'title' => $message['content']['title'],
                 'content' => $message['content']['text']
@@ -80,7 +80,7 @@ class Router {
             else if (empty($_POST['content'])) $errorMessages = 'Content cannot be empty.';
             else {
                 try {
-            $db->create_post($currentUser, $_POST['title'], $_POST['content']);
+                    $db->create_post($currentUser, $_POST['title'], $_POST['content']);
                 }
                 catch (\Exception $e) {
                     $errorMessages = $e->getCode() === "23000" ? 'Post already exists.' : 'An error occurred.';
