@@ -1,13 +1,5 @@
-<div class="text-center">
-    Welcome on My Super Post Thingy, the best place to share your thoughts and ideas with the world!<br>
-    {% if user %}
-        <a href="/new">Create a new post</a>
-    {% else %}
-        <a href="/login">Login</a>
-    {% endif %}
-    to start sharing your thoughts with the world!
-    <br><br>
+<div class="text-center mt-5">
+    {% include 'components/pageType/home/content.twig' %}
     {% include 'components/pageType/search/search_bar.twig' %}
-
     {% include 'components/pageType/home/post_list.twig' %}
 </div>
