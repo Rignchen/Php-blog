@@ -1,7 +1,5 @@
 {% if post_list|length == 0 %}
-    <div class="text-center">
-        <h1 class="display-4">No post found</h1>
-    </div>
+    <p class="text-center fs-3">No post found</p>
 {% else %}
     <ul class="list-unstyled">
         {% for item in post_list %}
