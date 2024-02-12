@@ -1,14 +1,7 @@
-<ul class="list-unstyled container mt-5">
-    {% for post in posts %}
-        {% set creator = get_creator(post).get_username() %}
-        {% set title = post.get_title() %}
-        {% set content = post.get_content() %}
-
-        <!-- I have to put the <li> tag inside the <a> tag because otherwise the redirect wouldn't work when clicking outside the text -->
-        <a href="/post/{{ creator }}/{{ title }}" class="text-decoration-none text-dark">
-            <li class="p-3 border mb-2">
-                {% include 'components/pageType/search/post.twig' %}
-            </li>
-        </a>
-    {% endfor %}
-</ul>
+<div class="m-4">
+    {% include 'components/pageType/search/user_list.twig' %}
+</div>
+<span style="border-bottom: 1px solid #e5e5e5; margin: 10px 0; display: block;"></span> <!-- drow a line across the page -->
+<div class="m-4">
+    {% include 'components/pageType/search/post_list.twig' %}
+</div>

@@ -1,8 +1,17 @@
-<span>
-    {{ title }}<br>
-    {% if content|length > 100 %}
-        {{ content|slice(0, 100) }}...
-    {% else %}
-        {{ content }}
-    {% endif %}
-</span>
+{% set creator = get_creator(item).get_username() %}
+{% set title = item.get_title() %}
+{% set content = item.get_content() %}
+
+<!-- I have to put the <li> tag inside the <a> tag because otherwise the redirect wouldn't work when clicking outside the text -->
+<a href="/post/{{ creator }}/{{ title }}" class="text-decoration-none text-dark">
+    <li class="p-3 border mb-2">
+        <span>
+            {{ title }}<br>
+            {% if content|length > 100 %}
+                {{ content|slice(0, 100) }}...
+            {% else %}
+                {{ content }}
+            {% endif %}
+        </span>
+    </li>
+</a>

@@ -44,26 +44,31 @@ class Database {
         $stmt->execute(['id' => $post->get_user_id(), 'title' => $post->get_title()]);
     }
 
-    private function make_post_array($stmt): array {
+    private function make_array_of_call($stmt, $callable): array {
         $posts = [];
         while ($row = $stmt->fetch()) {
-            $posts[] = new Post($row);
+            $posts[] = $callable($row);
         }
         return $posts;
     }
     public function get_all_posts_from_user(User $user): array {
         $stmt = $this->pdo->prepare('select * from posts where user_id = :id');
         $stmt->execute(['id' => $user->get_id()]);
-        return $this->make_post_array($stmt);
+        return $this->make_array_of_call($stmt, fn ($post) => new Post($post));
     }
     public function getMostRecentPosts(): array {
         $stmt = $this->pdo->prepare('select * from posts order by created_at desc limit 10');
         $stmt->execute();
-        return $this->make_post_array($stmt);
+        return $this->make_array_of_call($stmt, fn ($post) => new Post($post));
     }
     public function search_posts(String $search): array {
         $stmt = $this->pdo->prepare('select * from posts where title like :search or content like :search');
         $stmt->execute(['search' => '%' . $search . '%']);
-        return $this->make_post_array($stmt);
+        return $this->make_array_of_call($stmt, fn ($post) => new Post($post));
+    }
+    public function search_users(mixed $search): array {
+        $stmt = $this->pdo->prepare('select * from users where username like :search');
+        $stmt->execute(['search' => '%' . $search . '%']);
+        return $this->make_array_of_call($stmt, fn ($user) => new User($user));
     }
 }

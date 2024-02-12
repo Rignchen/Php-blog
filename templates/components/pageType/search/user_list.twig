@@ -1,0 +1,11 @@
+{% if user_list|length == 0 %}
+    <div class="text-center">
+        <h1 class="display-4">No user found</h1>
+    </div>
+{% else %}
+    <span class="d-flex gap-3">
+        {% for item in user_list %}
+            {% include 'components/pageType/search/user.twig' %}
+        {% endfor %}
+    </span>
+{% endif %}
